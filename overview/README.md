@@ -1,0 +1,9 @@
+# Overview
+
+Neutron is a virtual network service for OpenStack. It provides an API to request and configure virtual networks that connect network interfaces with other OpenStack services such as vNICs from Nova VMs. CERN cloud infrastructure is currently using nova-network to provide networking to instances. However, there is a medium term plan for its deprecation in favor of Neutron.
+
+Extensive investigations have been carried out to define a suitable Neutron deployment model that takes into account CERN current computer centre network topology, in which Nova VMs are connected to pre-existing non-OpenStack managed virtual networks. Such a topology restricts the choice of the overlay technology for the realization of software defined networks to the one based on virtual point-to-point links.
+
+CERN strategy is first to deploy Neutron with a minimum set of features and then to add more incrementally. This year the first test cluster has been deployed. In this cluster interfaces are directly connected to a single provider network relying on Neutron subnets for IPAM over the above mentioned predefined virtual networks. It is running using the Modular Layer 2 implementation framework which allows to simultaneously utilize the Linux Bridge and Hyper-V L2 agents on compute nodes. With this deployment it is possible to provide the end-users with the “security group” functionality, which on the contrary is not possible with nova-network due to Nova Cells scalability model.
+
+Since CERN uses a flat networking model and an external DHCP service, Neutron does not need to operate physical replications of dedicated network nodes. This initially simplifies the scaling operations of Neutron and allows to dynamically scale out Neutron services using a mixed physical / virtual architecture, as in to the other OpenStack services.
